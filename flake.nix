@@ -23,19 +23,16 @@
       modules = [
         ./nixos-modules/configuration.nix
         ./nixos-modules/hardware-configuration.nix
-
         ./nixos-modules/base.nix
+        # Add more nixos modules here
 
         # Home manager as NixOS module
         inputs.home-manager.nixosModules.home-manager
+        # Add more home-manager modules *inside* the file
         ./nixos-modules/home-manager.nix
       ];
     };
 
-    /*
-     Global pkgs
-     Add overlays or configuratioj here, not in home-manager's config
-     */
     legacyPackages."x86_64-linux" = import nixpkgs {
       system = "x86_64-linux";
       config = {
@@ -46,12 +43,17 @@
       ];
     };
 
-    devShells."x86_64-linux".default = with self.legacyPackages."x86_64-linux";
+    devShells."x86_64-linux".default = with self.legacyPackages."x86_64-linux"; let
+      nixPkg =
+        if lib.versionAtLeast nix.version nix_2_4.version
+        then nix
+        else nix_2_4;
+    in
       mkShell
       {
         name = "bootstrap-shell";
         packages = [
-          nixUnstable
+          nixPkg
           git
         ];
         shellHook = ''
@@ -64,8 +66,10 @@
           echo "  $ sudo mv /etc/nixos/configuration.nix $PWD/nixos-modules/"
           echo "  $ sudo mv /etc/nixos/hardware-configuration.nix $PWD/nixos-modules/"
           echo "  $ sudo chown -R $USER:$(id -gn) nixos-modules"
-          echo "- Edit flake.nix and change HOSTNAME for your hostname ($(cat /etc/hostname))"
-          echo "  $ sed -i 's/HOSTNAME/$(cat /etc/hostname)/g' flake.nix"
+          echo "- Edit flake.nix and change HOSTNAME for your hostname"
+          echo "  $ sed -i 's/HOSTNAME/$(cat /etc/hostname)/g' $PWD/flake.nix"
+          echo "- Edit ./nixos-modules/home-manager.nix and change USER for your user"
+          echo "  $ sed -i 's/USER/$USER/g' $PWD/nixos-modules/home-manager.nix"
           echo "- Install"
           echo "  $ sudo -E nixos-rebuild switch --flake $PWD"
           echo ""

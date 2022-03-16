@@ -20,19 +20,13 @@
     exact = true;
   };
 in {
-  # Special setting to Home-Manager if it runs as a NixOS module
-
   system.configurationRevision = self.rev or null;
 
   nix = {
-    package =
-      if lib.versionAtLeast pkgs.nix.version pkgs.nix_2_4.version
-      then pkgs.nix
-      else pkgs.nix_2_4;
+    # Only needed on nixos-21.11
+    # package = nixUnstable;
 
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    extraOptions = builtins.readFile ../nix.conf};
 
     # name "pkgs" for convenience, so tools will work with
     # nix shell pkgs#foo ; etc

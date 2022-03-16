@@ -15,14 +15,4 @@
     $DRY_RUN_CMD ln -s $VERBOSE_ARG /dev/null $HOME/.nix-channels
     $DRY_RUN_CMD ln -sf $VERBOSE_ARG /dev/null $HOME/.config/nixpkgs
   '';
-
-  # nix.registry =
-  #   lib.mapAttrs' (
-  #     name: value: {
-  #       inherit name;
-  #       value.flake = value;
-  #     }
-  #   )
-  #   inputs
-  #   // { inherit self; };
 }
