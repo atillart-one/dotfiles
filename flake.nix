@@ -43,17 +43,13 @@
       ];
     };
 
-    devShells."x86_64-linux".default = with self.legacyPackages."x86_64-linux"; let
-      nixPkg =
-        if lib.versionAtLeast nix.version nix_2_4.version
-        then nix
-        else nix_2_4;
-    in
+    devShells."x86_64-linux".default = with self.legacyPackages."x86_64-linux";
       mkShell
       {
         name = "bootstrap-shell";
         packages = [
-          nixPkg
+          # use our nix package that supports flakes
+          nix
           git
         ];
         shellHook = ''
