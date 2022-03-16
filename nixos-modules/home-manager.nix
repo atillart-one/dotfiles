@@ -1,6 +1,8 @@
 {
   config,
   pkgs,
+  inputs,
+  self,
   ...
 }: {
   home-manager = {
