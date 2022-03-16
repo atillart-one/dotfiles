@@ -26,7 +26,7 @@ in {
     # Only needed on nixos-21.11
     # package = nixUnstable;
 
-    extraOptions = builtins.readFile ../nix.conf};
+    extraOptions = builtins.readFile ../nix.conf;
 
     # name "pkgs" for convenience, so tools will work with
     # nix shell pkgs#foo ; etc
