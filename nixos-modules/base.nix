@@ -47,4 +47,10 @@ in {
 
   environment.etc."nix/inputs/nixpkgs".source = self.outPath;
   environment.variables.NIXPKGS_CONFIG = lib.mkForce "";
+  services.xserver.windowManager.awesome.enable = true;
+  programs.git.enable = true;
+  networking.wireless.iwd.enable = true;
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "iwd";
+  services.upower.enable = true;
 }

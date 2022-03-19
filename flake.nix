@@ -14,7 +14,7 @@
     nixpkgs,
     ...
   }: {
-    nixosConfigurations.HOSTNAME = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
         inherit inputs self;
@@ -62,8 +62,8 @@
           echo "  $ sudo mv /etc/nixos/configuration.nix $PWD/nixos-modules/"
           echo "  $ sudo mv /etc/nixos/hardware-configuration.nix $PWD/nixos-modules/"
           echo "  $ sudo chown -R $USER:$(id -gn) nixos-modules"
-          echo "- Edit flake.nix and change HOSTNAME for your hostname"
-          echo "  $ sed -i 's/HOSTNAME/$(cat /etc/hostname)/g' $PWD/flake.nix"
+          echo "- Edit flake.nix and change nixos for your hostname"
+          echo "  $ sed -i 's/nixos/$(cat /etc/hostname)/g' $PWD/flake.nix"
           echo "- Edit ./nixos-modules/home-manager.nix and change USER for your user"
           echo "  $ sed -i 's/USER/$USER/g' $PWD/nixos-modules/home-manager.nix"
           echo "- Install"
