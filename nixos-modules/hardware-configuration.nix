@@ -28,4 +28,5 @@
     ];
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  networking.interfaces.wlan0.useDHCP = lib.mkDefault true;
 }

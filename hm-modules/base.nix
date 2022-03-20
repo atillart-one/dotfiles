@@ -16,43 +16,87 @@
     $DRY_RUN_CMD ln -sf $VERBOSE_ARG /dev/null $HOME/.config/nixpkgs
   '';
 home.packages = with pkgs; [ 
-iosevka
+(nerdfonts.override { fonts = [ "Iosevka" ]; })
+montserrat
+overpass
+inter
 neofetch
 htop
 gtop
 neovim
 cava
+playerctl
+gcc
+python311
+rofi
+ranger
+feh
+xfce.thunar
+discord
+betterdiscordctl
+xarchiver
+unzip
+rar
+networkmanagerapplet
+pa_applet
+lxappearance
+psmisc
     ];
 services.picom.enable = true;
 services.picom.fade = true;
+services.picom.backend = "glx";
+services.picom.shadow = true;
+services.picom.extraOptions = "
+corner-radius = 12
+";
 services.flameshot.enable = true;
 fonts.fontconfig.enable = true;
 programs.zsh.enable = true; 
 programs.kitty.enable = true;
-programs.zsh.prezto.enable = true; 
+programs.zsh.prezto.enable = true;
+programs.zsh.prezto.prompt.theme = "powerlevel10k";
+programs.zsh.prezto.pmodules = [ "environment" "terminal" "editor" "history" "directory" "spectrum" "utility" "syntax-highlighting" "history-substring-search" "autosuggestions" "archive" "completion" "prompt" ];
+programs.zsh.initExtra = "alias vim='nvim'
+autoload -Uz promptinit
+promptinit
+prompt powerlevel10k 
+
+# To customize prompt, run p10k configure or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
 programs.kitty.settings = {
-font_family = "Iosevka";
-bold_font = "auto";
-italic_font = "auto";
-bold_italic_font = "auto";
-foreground = "#E8E3E3";
-background = "#151515";
-url_color = "#E8E3E3";
-color0 = "#151515";
-color8 = "#424242";
-color1 = "#B66467";
-color9 = "#B66467";
-color2 = "#8C977D";
-color10 = "#8C977D";
-color3 = "#D9BC8C";
-color11 = "#D9BC8C";
-color4 = "#8DA3B9";
-color12 = "#8DA3B9";
-color5 = "#A988B0";
-color13 = "#A988B0";
-color6 = "#8AA6A2";
-color14 = "#8AA6A2";
-color7 =  "#E8E3E3";
-color15 =  "#E8E3E3";
+font_family = "Iosevka Nerd Font";
+window_padding_width = 15;
+foreground = "#f0f0f0";
+background = "#0f0f0f";
+url_color = "#c6a679";
+url_style = "single";
+cursor = "#f0f0f0";
+cursor_text_color = "#ffffff";
+selection_foreground = "#262626";
+selection_background = "#f0f0f0";
+
+color8 = "#262626";
+color0 = "#4c4c4c";
+
+color1 = "#ac8a8c";
+color9 = "#c49ea0";
+
+color2 = "#8aac8b";
+color10 = "#9ec49f";
+
+color3 = "#aca98a";
+color11 = "#c4c19e";
+
+color4 = "#8f8aac";
+color12 = "#a39ec4";
+
+color5 = "#ac8aac";
+color13 = "#c49ec4";
+
+color6 = "#8aacab";
+color14 = "#9ec3c4";
+
+color15 = "#e7e7e7";
+color7 = "#f0f0f0";
 };
 }

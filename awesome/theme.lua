@@ -100,7 +100,7 @@ theme.menu_width  = dpi(100)
 --theme.bg_widget = "#cc0000"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = "/home/shivang/.config/awesome/themes/tokyo-night/close.png"
+theme.titlebar_close_button_normal = "/home/nix/.config/awesome/themes/tokyo-night/close.png"
 theme.titlebar_close_button_focus  = theme.titlebar_close_button_normal
 
 theme.titlebar_minimize_button_normal = themes_path.."default/titlebar/minimize_normal.png"

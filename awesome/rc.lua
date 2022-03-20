@@ -61,7 +61,6 @@ playerctl:connect_signal("metadata",
     end
 end)
 
-local volume_widget = require("widgets.vol_slider")
 local layoutlist = awful.popup {
   widget = {
     awful.widget.layoutlist {
@@ -494,8 +493,8 @@ local right_widget = wibox.widget {
         top = 10,
     }
 
-og_width = 275
-s.leftbar = wibox({ screen = s, width = og_width, height = 40, x = 40, y = 1025, ontop = true}) 
+og_width = 260
+s.leftbar = wibox({ screen = s, width = og_width, height = 40, x = 40, y = 768-55, ontop = true}) 
 s.leftbar:setup {
             layout = wibox.layout.align.horizontal,
             expand = 'inside',
@@ -509,7 +508,6 @@ s.leftbar:setup {
           bottom = 10,
           right = 15,
             },
-          volume_widget,
           layout = wibox.layout.align.horizontal,
           spacing = 15,
         },
@@ -593,7 +591,7 @@ action = awful.popup {
             layout = wibox.layout.align.horizontal,
             expand = 'none',
             forced_height = 215,
-            forced_width = 1840,
+            forced_width = 1366-80,
             music_widget,
             {
                 widget = wibox.container.margin,
@@ -624,7 +622,7 @@ action = awful.popup {
   ontop = true,
 }
 local slide = rubato.timed {
-  pos = 1080,
+  pos = 768,
   rate = 60,
   intro = 0.3,
   duration = 0.6,
@@ -645,12 +643,12 @@ end)
 
 local function action_show()
   action.visible = true
-  slide:set(785)
+  slide:set(768-295)
   action_status = false
 end
 
 local function action_hide()
-  slide:set(1080)
+  slide:set(768)
   action_status = true
 end
 
@@ -669,7 +667,7 @@ local task_slide = rubato.timed {
 local task_status = false
 
 local function task_show()
-  task_slide:set(540)
+  task_slide:set(420)
   task_status = false
 
 end
@@ -683,7 +681,7 @@ task_slide.ended:subscribe(function()
   if task_status then
     s.leftbar.width = og_width
   else
-    s.leftbar.width = 540
+    s.leftbar.width = 420
   end
 end)
 
@@ -816,7 +814,7 @@ end),
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.util.spawn("/home/shivang/.config/rofi/launchers/text/launcher.sh") end,
+    awful.key({ modkey },            "r",     function () awful.util.spawn("/home/nix/.config/rofi/launchers/text/launcher.sh") end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey, "Control" }, "x",
@@ -1066,7 +1064,7 @@ Scratch.term = bling.module.scratchpad {
   sticky = true,
   autoclose = true,
   floating = true,
-  geometry = { x = 512, y = 300, height = 500, width = 850 },
+  geometry = { x = (1366-850)/2, y = (768-500)/2, height = 500, width = 850 },
   reapply = true,
   dont_focus_before_close = false,
 }
@@ -1093,11 +1091,12 @@ client.connect_signal("property::fullscreen", function(c)
   end
 end)
 -- AutoStart Applications
-awful.spawn.with_shell("picom")
+awful.spawn.with_shell("picom --experimental-backend")
 awful.spawn.with_shell("nm-applet")
+awful.spawn.with_shell("pa-applet")
 awful.spawn.with_shell('xautolock -time 5 -corners ---- -locker "betterlockscreen -l"')
 
 bling.module.wallpaper.setup {
-    wallpaper = {"/home/shivang/Pictures/wallz/343434.png"},
+    wallpaper = {"/home/nix/nixfiles/wallz/343434.png"},
     position = "fit",
 }
