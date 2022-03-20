@@ -1,6 +1,6 @@
-[submodule "awesome/awesome/bling"]
-	path = awesome/awesome/bling
+[submodule "awesome/bling"]
+	path = awesome/bling
 	url = https://github.com/BlingCorp/bling
-[submodule "awesome/awesome/rubato"]
-	path = awesome/awesome/rubato
+[submodule "awesome/rubato"]
+	path = awesome/rubato
 	url = https://github.com/andOrlando/rubato
