@@ -17,6 +17,9 @@ theme.black = "#0F0F0F"
 
 theme.playerctl_update_on_activity = true
 theme.playerctl_position_update_interval = 1
+theme.parent_filter_list   = {"firefox"} -- class names list of parents that should not be swallowed
+theme.child_filter_list    = { "firefox" }        -- class names list that should not swallow their parents
+theme.swallowing_filter = true     
 
 theme.purple1 = "#8F8AAC"
 theme.pink1 = "#AC8AAC"

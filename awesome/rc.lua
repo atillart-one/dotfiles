@@ -494,7 +494,7 @@ local right_widget = wibox.widget {
     }
 
 og_width = 260
-s.leftbar = wibox({ screen = s, width = og_width, height = 40, x = 40, y = 768-55, ontop = true}) 
+s.leftbar = wibox({ screen = s, width = og_width, height = 40, x = 40, y = 768-55, ontop = false}) 
 s.leftbar:setup {
             layout = wibox.layout.align.horizontal,
             expand = 'inside',

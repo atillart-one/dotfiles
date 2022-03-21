@@ -16,7 +16,7 @@
     $DRY_RUN_CMD ln -sf $VERBOSE_ARG /dev/null $HOME/.config/nixpkgs
   '';
 home.packages = with pkgs; [ 
-(nerdfonts.override { fonts = [ "Iosevka" ]; })
+(nerdfonts.override { fonts = [ "Iosevka" "SourceCodePro"]; })
 montserrat
 overpass
 inter
@@ -41,11 +41,15 @@ networkmanagerapplet
 pa_applet
 lxappearance
 psmisc
+vscodium-fhs
     ];
+services.betterlockscreen.enable = true;
 services.picom.enable = true;
 services.picom.fade = true;
 services.picom.backend = "glx";
+services.picom.vSync = true;
 services.picom.shadow = true;
+services.picom.experimentalBackends = true;
 services.picom.extraOptions = "
 corner-radius = 12
 ";
@@ -64,7 +68,7 @@ prompt powerlevel10k
 # To customize prompt, run p10k configure or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
 programs.kitty.settings = {
-font_family = "Iosevka Nerd Font";
+font_family = "Sauce Code Nerd Font";
 window_padding_width = 15;
 foreground = "#f0f0f0";
 background = "#0f0f0f";
