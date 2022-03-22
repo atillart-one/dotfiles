@@ -54,10 +54,33 @@ local rubato = require("rubato")
 local bling = require("bling")
 local playerctl = bling.signal.playerctl.lib()
 
+local naughty = require("naughty")
+local nconf = naughty.config
+nconf.defaults.border_width = 0
+nconf.defaults.margin = 16
+nconf.defaults.shape = gears.shape.rounded_rect
+nconf.defaults.timeout = 5
+nconf.padding = 12
+nconf.defaults.icon_size = 128
+nconf.spacing = 8
+beautiful.notification_font = "Montserrat Alternates 12"
+local music_text = wibox.widget {
+    font = "Montserrat Alternates 20",
+    widget = wibox.widget.textbox
+}
+    
+local art = wibox.widget {
+    image = "default_image.png",
+    resize = true,
+    forced_width = dpi(220),
+    widget = wibox.widget.imagebox
+}
+
 playerctl:connect_signal("metadata",
                        function(_, title, artist, album_path, album, new, player_name)
     if new == true then
-        naughty.notify({title = "NOW PLAYING", text = title, image = album_path})
+        art:set_image(album_path)
+        naughty.notify({title = "NOW PLAYING", text = title .. "\nby " .. string.gsub(artist, "- Topic", ""), image = album_path})
     end
 end)
 
@@ -171,7 +194,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock(" %H:%M    %A, %B %d")
+mytextclock = wibox.widget.textclock("<span font='size: 20px'></span>  %H:%M      <span font = 'size: 20px'></span>  %A,  %B %d")
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -252,13 +275,9 @@ local prev_widget = wibox.widget {
     widget = wibox.widget.textbox
 }
 
-local player_volume = wibox.widget {
-     
-}
-
 local name_widget = wibox.widget {
     markup = 'Nothing Playing',
-    font = 'Iosevka 14',
+    font = 'Montserrat Alternates 14',
     align = 'center',
     valign = 'center',
     widget = wibox.widget.textbox
@@ -268,17 +287,11 @@ local artist_widget = wibox.widget {
     markup = '<span color="#767676"> Nothing Playing </span>',
     align = 'center',
     valign = 'center',
-    font = 'Iosevka 12',
+    font = 'Montserrat Alternates 12',
     fg = beautiful.black1,
     widget = wibox.widget.textbox
 }
 
-local art = wibox.widget {
-    image = "default_image.png",
-    resize = true,
-    forced_width = dpi(220),
-    widget = wibox.widget.imagebox
-}
 
 local progress = wibox.widget {
         max_value     = 100,
@@ -309,7 +322,6 @@ playerctl:connect_signal("metadata",
     -- Set player name, title and artist widgets
     name_widget:set_markup_silently(title)
     artist_widget:set_markup_silently('<span color="#767676">' .. artist .. '</span>')
-    art:set_image(gears.surface.load_uncached(album_path))
 end)
 
 playerctl:connect_signal("playback_status",
@@ -378,7 +390,7 @@ awful.screen.connect_for_each_screen(function(s)
     },
     layout   = {
         layout  = wibox.layout.fixed.vertical,
-        spacing = 5
+        spacing = 10
     },
     widget_template = {
         {
@@ -395,7 +407,7 @@ awful.screen.connect_for_each_screen(function(s)
                         widget  = wibox.container.margin,
                     },
                     bg     = '#dddddd00',
-                    shape  = gears.shape.circle,
+                    shape  = gears.shape.rounded_rect,
                     widget = wibox.container.background,
                 },
                 {
@@ -406,8 +418,8 @@ awful.screen.connect_for_each_screen(function(s)
             },
             top  = 6,
             bottom = 6,
-            left = 12,
-            right = 12,
+            left = 15,
+            right = 15,
             widget = wibox.container.margin
         },
         id     = 'background_role',
@@ -494,39 +506,44 @@ local right_widget = wibox.widget {
     }
 
 og_width = 260
-s.leftbar = wibox({ screen = s, width = og_width, height = 40, x = 40, y = 768-55, ontop = false}) 
-s.leftbar:setup {
-            layout = wibox.layout.align.horizontal,
-            expand = 'inside',
-        {{{
-                    layout = wibox.layout.fixed.horizontal,
-                    mytextclock,
-                },
-          widget = wibox.container.margin,
-          top = 10,
-          left = 15,
-          bottom = 10,
-          right = 15,
+s.leftbar = awful.popup {
+        widget = {
+            widget = wibox.container.margin,
+            top = 5,
+            bottom = 8,
+            left = 15,
+            right = 15,
+            {
+                layout = wibox.layout.stack,
+                mytextclock,
+                forced_height = 24,
             },
-          layout = wibox.layout.align.horizontal,
-          spacing = 15,
         },
-        {
-            widget = wibox.container.margin
-        },
-        {{ 
-        layout = wibox.layout.fixed.horizontal,
-        mysystray,
-        },
-        widget = wibox.container.margin,
-        right = 10,
-        top = 10,
-        bottom = 10,
+  placement = function(c)
+    (awful.placement.bottom)(c, { margins = {bottom = 11} })
+  end,
+} 
+s.statusbar = awful.popup {
+        widget = {
+            widget = wibox.container.margin,
+            top = 5,
+            bottom = 5,
+            left = 15,
+            right = 15,
+            {
+                layout = wibox.layout.stack,
+                mysystray,
+                forced_height = 28,
             },
-          }
+        },
+  placement = function(c)
+    (awful.placement.bottom)(c, { margins = {bottom = 11} })
+  end,
+} 
+s.statusbar:struts{bottom = 40}
+s.statusbar.visible = false
 s.leftbar:struts{bottom = 40}
 s.leftbar.visible = true
-right_widget.visible = true
 
 mytextclock:connect_signal("button::press",
     function() dashboard_toggle()
@@ -538,11 +555,27 @@ music_widget = wibox.widget {
   expand = 'none',
   spacing = 0,
   s.mytaglist,
+  {
+                widget = wibox.container.margin
+                {
+                        layout = wibox.container.stack,
+                        art,
+                    },
+                margins = 30,
+            },
     {{{
         layout = wibox.layout.align.vertical,
         expand = 'outside',
         name_widget,
+                {{
+        layout = wibox.layout.stack;
         artist_widget,
+                    },
+        widget = wibox.container.margin,
+        top = 5,
+        bottom = -5
+                    },
+
                 {{
     layout = wibox.layout.align.vertical,
     expand = 'none',
@@ -555,7 +588,7 @@ music_widget = wibox.widget {
     },
         {{
             layout = wibox.layout.align.horizontal,
-            expand = 'none',
+            expand = 'inside',
             prev_widget,
             play_widget,
             next_widget,
@@ -591,7 +624,7 @@ action = awful.popup {
             layout = wibox.layout.align.horizontal,
             expand = 'none',
             forced_height = 215,
-            forced_width = 1366-80,
+            forced_width = 1366-40,
             music_widget,
             {
                 widget = wibox.container.margin,
@@ -617,7 +650,7 @@ action = awful.popup {
   border_width = 0,
   shape = gears.shape.rectangle,
   placement = function(c)
-    (awful.placement.bottom_left)(c, { margins = { bottom = 80 , left = 40 } })
+    (awful.placement.bottom_left)(c, { margins = { bottom = 55 , left = 20 } })
   end,
   ontop = true,
 }
@@ -643,7 +676,7 @@ end)
 
 local function action_show()
   action.visible = true
-  slide:set(768-295)
+  slide:set(768-270)
   action_status = false
 end
 
@@ -652,50 +685,14 @@ local function action_hide()
   action_status = true
 end
 
-local task_slide = rubato.timed {
-  pos = og_width,
-  rate = 60,
-  intro = 0.3,
-  duration = 0.6,
-  easing = rubato.quadratic,
-  awestore_compat = true,
-  subscribed = function(pos)
-    s.leftbar.width = pos
-  end,
-}
-
-local task_status = false
-
-local function task_show()
-  task_slide:set(420)
-  task_status = false
-
-end
-
-local function task_hide()
-  task_slide:set(og_width)
-  task_status = true
-end
-
-task_slide.ended:subscribe(function()
-  if task_status then
-    s.leftbar.width = og_width
-  else
-    s.leftbar.width = 420
-  end
+s.leftbar:connect_signal("mouse::enter", function() 
+        s.statusbar.visible = true
+        s.leftbar.visible = false
 end)
-
-s.leftbar:connect_signal("mouse::enter", function() task_show() end)
-s.leftbar:connect_signal("mouse::leave", function() task_hide() end)
-
-
-function task_toggle()
-    if not task_status then
-    task_hide()
-    else
-    task_show()
-    end
-end
+s.statusbar:connect_signal("mouse::leave", function()
+        s.statusbar.visible = false
+        s.leftbar.visible = true
+end)
 
 function dashboard_toggle()
     if action.visible then
@@ -814,7 +811,7 @@ end),
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.util.spawn("/home/nix/.config/rofi/launchers/text/launcher.sh") end,
+    awful.key({ modkey },            "r",     function () awful.util.spawn("rofi -no-lazy-grab -show drun -modi run,drun,window -theme '/home/nix/nixfiles/rofi/" .. beautiful.rofi .. ".rasi'") end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey, "Control" }, "x",
@@ -874,8 +871,8 @@ clientkeys = gears.table.join(
             c:raise()
         end ,
         {description = "(un)maximize horizontally", group = "client"}),
-awful.key({}, "XF86AudioRaiseVolume", function() os.execute("pactl set-sink-volume 0 +5%") slider.value = slider.value + 5 end),
-awful.key({}, "XF86AudioLowerVolume", function() os.execute("pactl set-sink-volume 0 -5%") slider.value = slider.value - 5 end),
+awful.key({}, "XF86AudioRaiseVolume", function() os.execute("pactl set-sink-volume 0 +5%") end),
+awful.key({}, "XF86AudioLowerVolume", function() os.execute("pactl set-sink-volume 0 -5%") end),
 awful.key({}, "XF86AudioMute", function() mute_toggle() end) )
 
 -- Bind all key numbers to tags.
@@ -1033,7 +1030,7 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-awful.titlebar(c, {size=35, position = 'left', bg_normal= beautiful.black3, bg_focus= "#151515"}):setup {
+awful.titlebar(c, {size=35, position = 'left', bg_normal= "#d7d7d7", bg_focus= "#cacaca"}):setup {
 {
       awful.titlebar.widget.closebutton(c),
       layout = wibox.layout.fixed.vertical,
@@ -1091,12 +1088,12 @@ client.connect_signal("property::fullscreen", function(c)
   end
 end)
 -- AutoStart Applications
-awful.spawn.with_shell("picom --experimental-backend")
+awful.spawn.with_shell("picom")
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("pa-applet")
 awful.spawn.with_shell('xautolock -time 5 -corners ---- -locker "betterlockscreen -l"')
 
 bling.module.wallpaper.setup {
-    wallpaper = {"/home/nix/nixfiles/wallz/343434.png"},
+    wallpaper = {beautiful.wallpaper},
     position = "fit",
 }

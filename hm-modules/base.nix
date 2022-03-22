@@ -30,8 +30,10 @@ gcc
 python311
 rofi
 ranger
+w3m
 feh
 xfce.thunar
+xfce.tumbler
 discord
 betterdiscordctl
 xarchiver
@@ -39,9 +41,14 @@ unzip
 rar
 networkmanagerapplet
 pa_applet
+papirus-icon-theme
+luna-icons
+marwaita
 lxappearance
 psmisc
 vscodium-fhs
+obs-studio
+steam
     ];
 services.betterlockscreen.enable = true;
 services.picom.enable = true;
@@ -49,7 +56,6 @@ services.picom.fade = true;
 services.picom.backend = "glx";
 services.picom.vSync = true;
 services.picom.shadow = true;
-services.picom.experimentalBackends = true;
 services.picom.extraOptions = "
 corner-radius = 12
 ";
@@ -67,40 +73,15 @@ prompt powerlevel10k
 
 # To customize prompt, run p10k configure or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
+programs.kitty.environment = {
+        "shell" = "zsh";
+        "editor" = "nvim";
+        "shell_integration" = "enabled";
+    };
 programs.kitty.settings = {
-font_family = "Sauce Code Nerd Font";
+font_family = "Iosevka Nerd Font";
 window_padding_width = 15;
-foreground = "#f0f0f0";
-background = "#0f0f0f";
-url_color = "#c6a679";
 url_style = "single";
-cursor = "#f0f0f0";
-cursor_text_color = "#ffffff";
-selection_foreground = "#262626";
-selection_background = "#f0f0f0";
-
-color8 = "#262626";
-color0 = "#4c4c4c";
-
-color1 = "#ac8a8c";
-color9 = "#c49ea0";
-
-color2 = "#8aac8b";
-color10 = "#9ec49f";
-
-color3 = "#aca98a";
-color11 = "#c4c19e";
-
-color4 = "#8f8aac";
-color12 = "#a39ec4";
-
-color5 = "#ac8aac";
-color13 = "#c49ec4";
-
-color6 = "#8aacab";
-color14 = "#9ec3c4";
-
-color15 = "#e7e7e7";
-color7 = "#f0f0f0";
 };
+programs.kitty.extraConfig = "include theme.conf";
 }
