@@ -14,6 +14,6 @@
       ../hm-modules/base.nix
     ];
     # Empty config so home-manager manages our user
-    users.USER = _: {};
+    users.nix = _: {};
   };
 }

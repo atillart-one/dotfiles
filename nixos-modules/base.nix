@@ -47,4 +47,12 @@ in {
 
   environment.etc."nix/inputs/nixpkgs".source = self.outPath;
   environment.variables.NIXPKGS_CONFIG = lib.mkForce "";
+  services.xserver.windowManager.awesome.enable = true;
+  hardware.opengl.driSupport = true;
+  # For 32 bit applications
+  hardware.opengl.driSupport32Bit = true;
+  programs.git.enable = true;
+  networking.networkmanager.enable = true;
+  services.upower.enable = true;
 }
+
