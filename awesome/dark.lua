@@ -14,6 +14,8 @@ local theme = {}
 theme.font          = "Montserrat Alternates 10"
 
 theme.black = "#0F0F0F"
+theme.titlebar = "#191919"
+theme.titlebar_active = "#151515"
 
 theme.playerctl_update_on_activity = true
 theme.playerctl_position_update_interval = 1
@@ -157,6 +159,9 @@ theme.awesome_icon = theme_assets.awesome_icon(
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = nil
 theme.wallpaper = "/home/nix/nixfiles/wallz/343434.png"
+theme.rofi = "dark"
+theme.toggle_icon = "  "
+
 return theme
 
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80x

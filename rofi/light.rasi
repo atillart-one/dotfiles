@@ -1,0 +1,18 @@
+/* colors */
+
+* {
+  al:      #cacaca;
+  bg:      #E7E7E7;
+  se:      #8AAC8B;
+  fg:      #262626;
+  ac:      #8AAC8B;
+  red:     #AC8A8C;
+  green:   #8AAC8B;
+  yellow:  #ACA98A;
+  blue:    #8A98AC;
+  purple:  #8F8AAC;
+  cyan:    #8AACAB;
+}
+
+@import "style_3.rasi"
+

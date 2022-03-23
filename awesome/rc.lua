@@ -251,6 +251,22 @@ end
 local mysystray = wibox.widget {
     widget = wibox.widget.systray
 }
+local mode_widget = wibox.widget {
+    markup = beautiful.toggle_icon,
+    font = 'Iosevka Nerd Font 14',
+    align = 'center',
+    valign = 'center',
+    widget = wibox.widget.textbox,
+}
+
+mode_widget:connect_signal("button::press", function()
+    if beautiful.rofi == "light" then
+        awful.util.spawn("/home/nix/nixfiles/dark.sh")
+    else 
+        awful.util.spawn("/home/nix/nixfiles/light.sh")
+    end
+end)
+
 local play_widget = wibox.widget {
     markup = '',
     font = 'Iosevka Nerd Font 16',
@@ -505,7 +521,6 @@ local right_widget = wibox.widget {
         top = 10,
     }
 
-og_width = 260
 s.leftbar = awful.popup {
         widget = {
             widget = wibox.container.margin,
@@ -514,7 +529,7 @@ s.leftbar = awful.popup {
             left = 15,
             right = 15,
             {
-                layout = wibox.layout.stack,
+                layout = wibox.layout.align.horizontal,
                 mytextclock,
                 forced_height = 24,
             },
@@ -531,8 +546,9 @@ s.statusbar = awful.popup {
             left = 15,
             right = 15,
             {
-                layout = wibox.layout.stack,
+                layout = wibox.layout.align.horizontal,
                 mysystray,
+                mode_widget,
                 forced_height = 28,
             },
         },
@@ -545,24 +561,12 @@ s.statusbar.visible = false
 s.leftbar:struts{bottom = 40}
 s.leftbar.visible = true
 
-mytextclock:connect_signal("button::press",
-    function() dashboard_toggle()
-end)
-
 music_widget = wibox.widget {
   {
   layout = wibox.layout.align.horizontal,
   expand = 'none',
   spacing = 0,
   s.mytaglist,
-  {
-                widget = wibox.container.margin
-                {
-                        layout = wibox.container.stack,
-                        art,
-                    },
-                margins = 30,
-            },
     {{{
         layout = wibox.layout.align.vertical,
         expand = 'outside',
@@ -611,6 +615,14 @@ music_widget = wibox.widget {
                 shape = gears.shape.rounded_rect,
                 bg = beautiful.black3,
                 },
+  {
+                widget = wibox.container.margin
+                {
+                        layout = wibox.container.stack,
+                        art,
+                    },
+                margins = 30,
+            },
   },
         widget = wibox.container.margin,
         margins = 15,
@@ -1030,7 +1042,7 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-awful.titlebar(c, {size=35, position = 'left', bg_normal= "#d7d7d7", bg_focus= "#cacaca"}):setup {
+awful.titlebar(c, {size=35, position = 'left', bg_normal= beautiful.titlebar, bg_focus= beautiful.titlebar_active}):setup {
 {
       awful.titlebar.widget.closebutton(c),
       layout = wibox.layout.fixed.vertical,
