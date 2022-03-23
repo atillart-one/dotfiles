@@ -100,5 +100,4 @@ url_style = "single";
 allow_remote_control = "yes";
 };
 programs.kitty.extraConfig = "include theme.conf";
-
 }
