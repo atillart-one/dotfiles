@@ -1,1 +1,1 @@
-/home/nix/nixfiles/awesome/dark.lua
+/home/nix/nixfiles/awesome/colors/dark.lua

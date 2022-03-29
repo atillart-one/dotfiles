@@ -12,4 +12,13 @@ final: prev: {
   })).override {
     gtk3Support = true;
   };
+  picom = prev.picom.overrideAttrs (prevAttrs: {
+    version = "unstable-2021-10-23";
+    src = prev.fetchFromGitHub {
+      owner = "pijulius";
+      repo = "picom";
+      rev = "982bb43e5d4116f1a37a0bde01c9bda0b88705b9";
+      hash = "sha256-YiuLScDV9UfgI1MiYRtjgRkJ0VuA1TExATA2nJSJMhM=";
+    };
+  });
 }

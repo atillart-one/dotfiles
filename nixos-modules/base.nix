@@ -52,7 +52,17 @@ in {
   # For 32 bit applications
   hardware.opengl.driSupport32Bit = true;
   programs.git.enable = true;
+  programs.light.enable = true;
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
   networking.networkmanager.enable = true;
   services.upower.enable = true;
+  services.xserver.config = "
+  Section \"Device\"
+    Identifier  \"Intel Graphics\" 
+    Driver      \"intel\"
+    Option      \"Backlight\"  \"intel_backlight\"
+EndSection
+";
 }
 

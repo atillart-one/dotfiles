@@ -70,7 +70,7 @@ local music_text = wibox.widget {
 }
     
 local art = wibox.widget {
-    image = "default_image.png",
+    image = (gears.filesystem.get_configuration_dir() .. "icons/music.png"),
     resize = true,
     forced_width = dpi(220),
     widget = wibox.widget.imagebox
@@ -194,7 +194,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock("<span font='size: 20px'></span>  %H:%M      <span font = 'size: 20px'></span>  %A,  %B %d")
+mytextclock = wibox.widget.textclock("%H:%M    %A,  %B %d")
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -406,7 +406,7 @@ awful.screen.connect_for_each_screen(function(s)
     },
     layout   = {
         layout  = wibox.layout.fixed.vertical,
-        spacing = 10
+        spacing = 5
     },
     widget_template = {
         {
@@ -432,10 +432,10 @@ awful.screen.connect_for_each_screen(function(s)
                 },
                 layout = wibox.layout.fixed.horizontal,
             },
-            top  = 6,
-            bottom = 6,
-            left = 15,
-            right = 15,
+            top  = 8,
+            bottom = 8,
+            left = 12,
+            right = 12,
             widget = wibox.container.margin
         },
         id     = 'background_role',
@@ -524,8 +524,8 @@ local right_widget = wibox.widget {
 s.leftbar = awful.popup {
         widget = {
             widget = wibox.container.margin,
-            top = 5,
-            bottom = 8,
+            top = 1,
+            bottom = 4,
             left = 15,
             right = 15,
             {
@@ -535,7 +535,7 @@ s.leftbar = awful.popup {
             },
         },
   placement = function(c)
-    (awful.placement.bottom)(c, { margins = {bottom = 11} })
+    (awful.placement.bottom)(c, { margins = {bottom = 0} })
   end,
 } 
 s.statusbar = awful.popup {
@@ -553,7 +553,7 @@ s.statusbar = awful.popup {
             },
         },
   placement = function(c)
-    (awful.placement.bottom)(c, { margins = {bottom = 11} })
+    (awful.placement.bottom)(c, { margins = {bottom = 10} })
   end,
 } 
 s.statusbar:struts{bottom = 40}
@@ -563,9 +563,8 @@ s.leftbar.visible = true
 
 music_widget = wibox.widget {
   {
-  layout = wibox.layout.align.horizontal,
-  expand = 'none',
-  spacing = 0,
+  layout = wibox.layout.fixed.horizontal,
+  spacing = 15,
   s.mytaglist,
     {{{
         layout = wibox.layout.align.vertical,
@@ -615,14 +614,6 @@ music_widget = wibox.widget {
                 shape = gears.shape.rounded_rect,
                 bg = beautiful.black3,
                 },
-  {
-                widget = wibox.container.margin
-                {
-                        layout = wibox.container.stack,
-                        art,
-                    },
-                margins = 30,
-            },
   },
         widget = wibox.container.margin,
         margins = 15,
@@ -641,7 +632,6 @@ action = awful.popup {
             {
                 widget = wibox.container.margin,
                 margins = 10,
-                forced_width = 200,
             },
             {{
                 layout = wibox.layout.align.vertical,
@@ -662,7 +652,7 @@ action = awful.popup {
   border_width = 0,
   shape = gears.shape.rectangle,
   placement = function(c)
-    (awful.placement.bottom_left)(c, { margins = { bottom = 55 , left = 20 } })
+    (awful.placement.bottom_left)(c, { margins = { bottom = 20 , left = 20 } })
   end,
   ontop = true,
 }
@@ -688,7 +678,7 @@ end)
 
 local function action_show()
   action.visible = true
-  slide:set(768-270)
+  slide:set(768-235)
   action_status = false
 end
 
@@ -739,7 +729,8 @@ end),
                  end
          end,
          {description = "toggle wibox", group = "awesome"}),
-    awful.key({ modkey, "Control"          }, "s", function () bling.module.window_swallowing.toggle() end),
+    awful.key({ modkey, "Control"          }, "s", function () bling.module.window_swallowing.toggle() end,
+        {description = "toggle swallowing", group = "client"}),
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -783,7 +774,7 @@ end),
     awful.key({ modkey,           }, "Tab",
         function () dashboard_toggle() 
         end,
-        {description = "open dashboard", group = "awesome"}),
+        {description = "toggle dashboard", group = "awesome"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -883,6 +874,10 @@ clientkeys = gears.table.join(
             c:raise()
         end ,
         {description = "(un)maximize horizontally", group = "client"}),
+     awful.key({ }, "XF86MonBrightnessDown", function ()
+        awful.util.spawn("light -U 10") end),
+    awful.key({ }, "XF86MonBrightnessUp", function ()
+        awful.util.spawn("light -A 10") end),
 awful.key({}, "XF86AudioRaiseVolume", function() os.execute("pactl set-sink-volume 0 +5%") end),
 awful.key({}, "XF86AudioLowerVolume", function() os.execute("pactl set-sink-volume 0 -5%") end),
 awful.key({}, "XF86AudioMute", function() mute_toggle() end) )
@@ -1042,6 +1037,40 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
+awful.titlebar(c, {size=35, position = 'top', bg_normal= beautiful.titlebar, bg_focus= beautiful.titlebar_active}):setup {
+{
+      awful.titlebar.widget.closebutton(c),
+      layout = wibox.layout.fixed.vertical,
+      spacing = 15,
+    },
+    widget = wibox.container.margin,
+    top = 15,
+    left = 10,
+    right = 8,
+  }
+
+awful.titlebar(c, {size=35, position = 'right', bg_normal= beautiful.titlebar, bg_focus= beautiful.titlebar_active}):setup {
+{
+      awful.titlebar.widget.closebutton(c),
+      layout = wibox.layout.fixed.vertical,
+      spacing = 15,
+    },
+    widget = wibox.container.margin,
+    top = 15,
+    left = 10,
+    right = 8,
+  }
+awful.titlebar(c, {size=35, position = 'bottom', bg_normal= beautiful.titlebar, bg_focus= beautiful.titlebar_active}):setup {
+{
+      awful.titlebar.widget.closebutton(c),
+      layout = wibox.layout.fixed.vertical,
+      spacing = 15,
+    },
+    widget = wibox.container.margin,
+    top = 15,
+    left = 10,
+    right = 8,
+  }
 awful.titlebar(c, {size=35, position = 'left', bg_normal= beautiful.titlebar, bg_focus= beautiful.titlebar_active}):setup {
 {
       awful.titlebar.widget.closebutton(c),
@@ -1079,16 +1108,23 @@ Scratch.term = bling.module.scratchpad {
 }
 bling.module.flash_focus.enable()
 -- imagine using titlebars for tiled windows
-screen.connect_signal("arrange", function(s)
+ screen.connect_signal("arrange", function(s)
   local layout = s.selected_tag.layout.name
   for _, c in pairs(s.clients) do
     if layout == "floating" or c.floating then
          awful.titlebar.show(c, "left")
+         awful.titlebar.show(c, "right")
+         awful.titlebar.show(c, "bottom")
+         awful.titlebar.show(c, "top")
     else
       awful.titlebar.hide(c, "left")
+      awful.titlebar.hide(c, "right")
+      awful.titlebar.hide(c, "bottom")
+      awful.titlebar.hide(c, "top")
     end
   end
 end)
+--]]
 -- Fullscreen Border fix 
 client.connect_signal("property::fullscreen", function(c)
   if c.fullscreen then
@@ -1100,12 +1136,12 @@ client.connect_signal("property::fullscreen", function(c)
   end
 end)
 -- AutoStart Applications
-awful.spawn.with_shell("picom")
+awful.spawn.with_shell("picom --animations --animation-for-open-window 'zoom'")
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("pa-applet")
 awful.spawn.with_shell('xautolock -time 5 -corners ---- -locker "betterlockscreen -l"')
 
 bling.module.wallpaper.setup {
     wallpaper = {beautiful.wallpaper},
-    position = "fit",
+    position = "scale",
 }

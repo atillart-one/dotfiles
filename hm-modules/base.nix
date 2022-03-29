@@ -15,6 +15,11 @@
     $DRY_RUN_CMD ln -s $VERBOSE_ARG /dev/null $HOME/.nix-channels
     $DRY_RUN_CMD ln -sf $VERBOSE_ARG /dev/null $HOME/.config/nixpkgs
   '';
+
+  home.file = {
+    ".config/awesome".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixfiles/awesome";
+    ".config/nvim/lua/custom".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixfiles/nvim/custom";
+  };
 home.packages = with pkgs; [ 
 (nerdfonts.override { fonts = [ "Iosevka" "SourceCodePro"]; })
 montserrat
@@ -27,7 +32,10 @@ neovim
 cava
 playerctl
 gcc
-python311
+python310
+python310Packages.pip
+nodejs
+nodePackages.npm
 rofi
 ranger
 w3m
@@ -39,6 +47,7 @@ betterdiscordctl
 xarchiver
 unzip
 rar
+gzip
 networkmanagerapplet
 pa_applet
 papirus-icon-theme
@@ -47,12 +56,17 @@ psmisc
 vscodium-fhs
 obs-studio
 steam
+ripgrep
 xsettingsd
+xorg.xwininfo
+obsidian
+logseq
+unityhub
     ];
 services.betterlockscreen.enable = true;
 services.picom.enable = true;
 services.picom.fade = true;
-services.picom.backend = "glx";
+services.picom.backend = "xrender";
 services.picom.vSync = true;
 services.picom.shadow = true;
 services.picom.blurExclude = [
@@ -74,9 +88,15 @@ services.picom.shadowExclude = [
   "window_type = 'tooltip'"
   "name = 'rofi - drun'"
 ];
-services.picom.extraOptions = "corner-radius = 12";
+services.picom.extraOptions = "
+corner-radius = 12;
+shadow-opacity = 0.9;
+detect-transient = true;
+detect-client-leader = true;
+";
 services.flameshot.enable = true;
 fonts.fontconfig.enable = true;
+programs.zathura.enable = true;
 programs.zsh.enable = true; 
 programs.kitty.enable = true;
 programs.zsh.prezto.enable = true;
