@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-hardware.url = github:NixOS/nixos-hardware/master;
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -12,6 +13,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixos-hardware,
     ...
   }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -30,6 +32,9 @@
         inputs.home-manager.nixosModules.home-manager
         # Add more home-manager modules *inside* the file
         ./nixos-modules/home-manager.nix
+
+        # Hardware configuration
+        nixos-hardware.nixosModules.asus-fx504gd
       ];
     };
 

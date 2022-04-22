@@ -1,1 +1,0 @@
-/home/nix/nixfiles/nvim/custom/dark.lua

@@ -5,7 +5,7 @@ final: prev: {
       owner = "awesomeWM";
       repo = "awesome";
       rev = "392dbc21ab6bae98c5bab8db17b7fa7495b1e6a5";
-      hash = "sha256-GD0MxMU4tz5SbahL0+ADUQXNoq1fIxOSXiEwoObC0ng="; 
+      hash = "sha256-JpG7tOtIfElDB4xjcjBFC4fE6Z0loZtP1mP8UOVVfyQ="; 
     };
     GI_TYPELIB_PATH = "${prev.playerctl}/lib/girepository-1.0:"
       + "${prev.upower}/lib/girepository-1.0:" + old.GI_TYPELIB_PATH;
