@@ -1,3 +1,5 @@
+/* taken from https://github.com/Neikon/AutoColor-Minimal-Proton */
+
 /* Custom tab active color */
 .tab-background[selected="true"] {
   background: #ffffff05 !important;
