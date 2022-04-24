@@ -61,7 +61,6 @@ xorg.xwininfo
 obsidian
 logseq
 pavucontrol
-gnome.gnome-power-manager
 cbatticon
     ];
 
@@ -264,7 +263,7 @@ u/-moz-document url(about:blank), url(about:newtab) {
               };
           };
       };
-  }
+  };
 
 # GTK
 gtk = {
@@ -347,7 +346,7 @@ programs.kitty.environment = {
     };
 programs.kitty.settings = {
 font_family = "M PLUS 1 Code";
-window_padding_window_padding_widthh = 15;
+window_padding_width = 15;
 url_style = "single";
 allow_remote_control = "yes";
 };

@@ -89,8 +89,18 @@ in {
   programs.dconf.enable = true;
   services.xserver.windowManager.awesome.enable = true;
   hardware.opengl.driSupport = true;
+
   # For 32 bit applications
   hardware.opengl.driSupport32Bit = true;
+  
+  # Nvidia 
+  nixpkgs.config.allowUnfree = true;
+  hardware.nvidia.prime.sync.enable = true;
+  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
+  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   programs.git.enable = true;
   programs.light.enable = true;
   programs.zsh.enable = true;
