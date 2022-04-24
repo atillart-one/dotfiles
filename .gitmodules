@@ -7,3 +7,6 @@
 [submodule "NvChad"]
 	path = NvChad
 	url = https://github.com/NvChad/NvChad
+[submodule "awesome/--force"]
+	path = awesome/--force
+	url = https://github.com/BlingCorp/bling
