@@ -61,6 +61,8 @@ xorg.xwininfo
 obsidian
 logseq
 pavucontrol
+gnome.gnome-power-manager
+cbatticon
     ];
 
 services.mpris-proxy.enable = true;
