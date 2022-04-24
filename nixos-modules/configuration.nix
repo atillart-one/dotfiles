@@ -24,7 +24,6 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp46s0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -57,10 +56,17 @@
   services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.nix = {
-    isNormalUser = true;
-    initialPassword = "passwd";
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  users.users = {
+    nix = {
+      isNormalUser = true;
+      initialPassword = "passwd";
+      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    };
+
+    root = {
+        initialPassword = "passwd";
+      };
+
   };
 
   # List packages installed in system profile. To search, run:

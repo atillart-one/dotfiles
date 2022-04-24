@@ -21,9 +21,10 @@
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixfiles/NvChad";
   };
 home.packages = with pkgs; [ 
-(nerdfonts.override { fonts = [ "Iosevka" "SourceCodePro"]; })
+(nerdfonts.override { fonts = [ "Iosevka" ]; })
+inconsolata
+mplus-outline-fonts.githubRelease
 montserrat
-overpass
 inter
 neofetch
 htop
@@ -52,7 +53,6 @@ networkmanagerapplet
 pa_applet
 lxappearance
 psmisc
-vscodium-fhs
 obs-studio
 steam
 ripgrep
@@ -60,6 +60,7 @@ xsettingsd
 xorg.xwininfo
 obsidian
 logseq
+pavucontrol
     ];
 
 services.mpris-proxy.enable = true;
@@ -85,7 +86,7 @@ gtk = {
   # Cursor
   cursorTheme = {
     package = pkgs.phinger-cursors;
-    name = "Phinger-Cursors";
+    name = "Phinger Cursors";
   };
 };
 
@@ -118,7 +119,7 @@ services.picom.shadowExclude = [
   "name = 'rofi - drun'"
 ];
 services.picom.extraOptions = "
-corner-radius = 12;
+corner-radius = 0;
 shadow-opacity = 0.9;
 detect-transient = true;
 detect-client-leader = true;
@@ -131,18 +132,13 @@ services.flameshot.enable = true;
 fonts.fontconfig.enable = true;
 programs.zathura.enable = true;
 
-# ZSH
+# Shell
 programs.zsh.enable = true; 
+programs.starship.enable = true;
+programs.starship.enableZshIntegration = true;
 programs.zsh.prezto.enable = true;
-programs.zsh.prezto.prompt.theme = "powerlevel10k";
 programs.zsh.prezto.pmodules = [ "environment" "terminal" "editor" "history" "directory" "spectrum" "utility" "syntax-highlighting" "history-substring-search" "autosuggestions" "archive" "completion" "prompt" ];
-programs.zsh.initExtra = "alias vi='nvim'
-autoload -Uz promptinit
-promptinit
-prompt powerlevel10k 
-# To customize prompt, run p10k configure or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
-
+programs.zsh.initExtra = "alias vi='nvim'";
 # Kitty
 programs.kitty.enable = true;
 programs.kitty.environment = {
@@ -151,14 +147,13 @@ programs.kitty.environment = {
         "shell_integration" = "enabled";
     };
 programs.kitty.settings = {
-font_family = "Iosevka Nerd Font";
-window_padding_width = 15;
+font_family = "M PLUS 1 Code";
+window_padding_window_padding_widthh = 15;
 url_style = "single";
 allow_remote_control = "yes";
 };
 programs.kitty.extraConfig = "
-cursor #f0f0f0
-cursor_text_color #ffffff
+font_size 12
 cursor_shape block
 
 cursor_blink_interval 0.5
@@ -180,43 +175,45 @@ remember_window_size no
 
 window_padding_width 20.0
 
-foreground            #f0f0f0
-background            #0f0f0f
-selection_foreground  #262626
-selection_background  #f0f0f0
-url_color             #c6a679
 #background_opacity  0.98
 
-# black
-color8   #262626
-color0   #4c4c4c
+background #0d1117
+foreground #aeb6be
+selection_background #163356
+selection_foreground #b3b1ad
+url_color #b3b1ad
 
-# red
-color1   #ac8a8c
-color9   #c49ea0
+cursor #c0caf5
 
-# green
-color2   #8aac8b
-color10  #9ec49f
+# Tabs
+active_tab_background #7aa2f7
+active_tab_foreground #1f2335
+inactive_tab_background #292e42
+inactive_tab_foreground #545c7e
+#tab_bar_background #15161E
 
-# yellow
-color3   #aca98a
-color11  #c4c19e
+# normal
+color0 #8b949e
+color1 #ff7b72
+color2 #9ece6a
+color3 #f78166
+color4 #79c0ff
+color5 #d2a8ff
+color6 #a5d6ff
+color7 #f0f6fc
 
-# blue
-color4  #8f8aac
-color12 #a39ec4
+# bright
+color8 #8b949e
+color9 #ff7b72
+color10 #9ece6a
+color11 #f78166
+color12 #79c0ff
+color13 #d2a8ff
+color14 #a5d6ff
+color15 #f0f6fc
 
-# magenta
-color5   #ac8aac
-color13  #c49ec4
-
-# cyan
-color6   #8aacab
-color14  #9ec3c4
-
-# white
-color15   #e7e7e7
-color7  #f0f0f0
+# extended colors
+color16 #ff9e64
+color17 #db4b4b
 ";
 }

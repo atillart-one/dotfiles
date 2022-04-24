@@ -84,7 +84,6 @@ in {
   
   # Bluetooth
   services.blueman.enable = true;
-  hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
 
   programs.dconf.enable = true;
