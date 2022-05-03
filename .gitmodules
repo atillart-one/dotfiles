@@ -10,3 +10,6 @@
 [submodule "awesome/--force"]
 	path = awesome/--force
 	url = https://github.com/BlingCorp/bling
+[submodule "awesome/nice"]
+	path = awesome/nice
+	url = https://github.com/mut-ex/awesome-wm-nice.git

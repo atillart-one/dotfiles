@@ -8,7 +8,7 @@
  */
 
 configuration {
-    font: 							"Iosevka Nerd Font 12";
+    font: 							"M PLUS 1 12";
     fixed-num-lines: 				true;
     show-icons: 					false;
     sidebar-mode: 					true;
@@ -24,16 +24,16 @@ configuration {
     display-combi: 					"";
 }
 
-@import "styles/colors.rasi"
+@import "colors.rasi"
 
 * {
     background-color:             	@bg;
+    border-color:                                       "#30363d";
 }
 
 window {
-    border: 						0px;
-    border-color: 					@ac;
-    border-radius: 					6px;
+    border: 						3px;
+    border-radius: 					0px;
     padding: 						30;
     width: 							20%;
 }

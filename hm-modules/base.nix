@@ -21,18 +21,19 @@
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixfiles/NvChad";
     ".config/betterlockscreenrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixfiles/betterlockscreenrc";
   };
-home.packages = with pkgs; [ 
+home.packages = with pkgs; [
 (nerdfonts.override { fonts = [ "Iosevka" ]; })
 inconsolata
-mplus-outline-fonts.githubRelease
-montserrat
 inter
-neofetch
+montserrat
+pfetch
+bunnyfetch
 htop
 gtop
 neovim
 cava
 playerctl
+brightnessctl
 gcc
 python310
 python310Packages.pip
@@ -53,9 +54,11 @@ gzip
 networkmanagerapplet
 pa_applet
 lxappearance
+xsettingsd
 psmisc
 obs-studio
 steam
+melonDS
 ripgrep
 xorg.xwininfo
 obsidian
@@ -259,6 +262,7 @@ u/-moz-document url(about:blank), url(about:newtab) {
             settings = {
                 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
                 "widget.gtk.overlay-scrollbars.enabled" = true;
+		"layout.css.scrollbar-gutter.enabled" = false;
                 "ui.prefersReducedMotion" = "1";
               };
           };
@@ -271,8 +275,7 @@ gtk = {
 
   # Theme
   theme = {
-    package = pkgs.orchis-theme.override { tweaks = [ "black" "compact" ];};
-    name = "Orchis-dark-compact";
+    name = "Tokyonight_Dark";
   };
   
   # Icons
@@ -286,8 +289,16 @@ gtk = {
     package = pkgs.phinger-cursors;
     name = "Phinger Cursors";
   };
+
+  # Font
+  font = {
+    package = pkgs.mplus-outline-fonts.githubRelease;
+    name = "M PLUS 1 Regular";
+    size = 11;
+  };
 };
 
+services.xsettingsd.enable = true;
 
 # Picom
 services.picom.enable = true;
@@ -318,7 +329,10 @@ services.picom.shadowExclude = [
 ];
 services.picom.extraOptions = "
 corner-radius = 0;
-shadow-opacity = 0.9;
+shadow-radius = 0;
+shadow-opacity = 0.85;
+shadow-offset-x = 8;
+shadow-offset-y = 12;
 detect-transient = true;
 detect-client-leader = true;
 animations = true;
@@ -336,7 +350,9 @@ programs.starship.enable = true;
 programs.starship.enableZshIntegration = true;
 programs.zsh.prezto.enable = true;
 programs.zsh.prezto.pmodules = [ "environment" "terminal" "editor" "history" "directory" "spectrum" "utility" "syntax-highlighting" "history-substring-search" "autosuggestions" "archive" "completion" "prompt" ];
+programs.zsh.prezto.terminal.autoTitle = true;
 programs.zsh.initExtra = "alias vi='nvim'";
+
 # Kitty
 programs.kitty.enable = true;
 programs.kitty.environment = {
@@ -345,25 +361,18 @@ programs.kitty.environment = {
         "shell_integration" = "enabled";
     };
 programs.kitty.settings = {
+window_padding_width = 20;
 font_family = "M PLUS 1 Code";
-window_padding_width = 15;
+font_size = "12";
 url_style = "single";
 allow_remote_control = "yes";
 };
 programs.kitty.extraConfig = "
-font_size 12
 cursor_shape block
-
 cursor_blink_interval 0.5
 cursor_stop_blinking_after 0
 
 scrollback_lines 5000
-
-url_color #0f0f0f
-url_style single
-
-repaint_delay 10
-input_delay 3
 
 sync_to_monitor yes
 
@@ -371,47 +380,6 @@ enable_audio_bell no
 
 remember_window_size no
 
-window_padding_width 20.0
-
-#background_opacity  0.98
-
-background #0d1117
-foreground #aeb6be
-selection_background #163356
-selection_foreground #b3b1ad
-url_color #b3b1ad
-
-cursor #c0caf5
-
-# Tabs
-active_tab_background #7aa2f7
-active_tab_foreground #1f2335
-inactive_tab_background #292e42
-inactive_tab_foreground #545c7e
-#tab_bar_background #15161E
-
-# normal
-color0 #8b949e
-color1 #ff7b72
-color2 #9ece6a
-color3 #f78166
-color4 #79c0ff
-color5 #d2a8ff
-color6 #a5d6ff
-color7 #f0f6fc
-
-# bright
-color8 #8b949e
-color9 #ff7b72
-color10 #9ece6a
-color11 #f78166
-color12 #79c0ff
-color13 #d2a8ff
-color14 #a5d6ff
-color15 #f0f6fc
-
-# extended colors
-color16 #ff9e64
-color17 #db4b4b
+include colors.conf
 ";
 }

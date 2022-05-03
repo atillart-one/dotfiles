@@ -36,10 +36,11 @@
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = lib.mkDefault false;
-  networking.interfaces.enp46s0.useDHCP = lib.mkDefault true;
-  networking.interfaces.wlp45s0.useDHCP = lib.mkDefault true;
-
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  # networking.useDHCP = lib.mkDefault false;
+  # networking.interfaces.enp46s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp45s0.useDHCP = lib.mkDefault true;
+  
+  powerManagement.enable = true;
+  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

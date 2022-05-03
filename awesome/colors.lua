@@ -1,0 +1,1 @@
+/home/nix/nixfiles/awesome/colors/light.lua

@@ -8,7 +8,7 @@
  */
 
 configuration {
-    font: 							"Iosevka Nerd Font 12";
+    font: 							"M PLUS 1 12";
     fixed-num-lines: 				true;
     show-icons: 					false;
     sidebar-mode: 					true;
@@ -16,15 +16,15 @@ configuration {
     window-format: 					"[{w}] ··· {c} ···   {t}";
     click-to-exit: 					true;
     combi-hide-mode-prefix: 		false;
-    display-window: 				"";
+    display-window: 				"  Windows";
     display-windowcd: 				"";
-    display-run: 					"";
+    display-run: 					"  Run";
     display-ssh: 					"";
-    display-drun: 					"";
+    display-drun: 					"  Apps";
     display-combi: 					"";
 }
 
-@import "styles/colors.rasi"
+@import "colors.rasi"
 
 * {
     background-color:             	@bg;

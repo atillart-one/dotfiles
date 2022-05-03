@@ -19,6 +19,15 @@
     };
     exact = true;
   };
+
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec -a "$0" "$@"
+  '';
+
 in {
   system.configurationRevision = self.rev or null;
 
@@ -47,6 +56,22 @@ in {
 
   environment.etc."nix/inputs/nixpkgs".source = self.outPath;
   environment.variables.NIXPKGS_CONFIG = lib.mkForce "";
+  
+  nixpkgs.config.allowUnfree = true;
+  
+  #NVIDIA
+  environment.systemPackages = [ nvidia-offload ];
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.prime = {
+    offload.enable = true;
+
+    # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
+    intelBusId = "PCI:0:2:0";
+
+    # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
+    nvidiaBusId = "PCI:1:0:0";
+  };
 
   #GRUB
   boot.loader = {
@@ -80,32 +105,25 @@ in {
   };
 
   # Time
-  time.hardwareClockInLocalTime = true;
-  
+  time.timeZone = "Asia/Kolkata";
+
   # Bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
 
   programs.dconf.enable = true;
   services.xserver.windowManager.awesome.enable = true;
+
+  # OpenGL
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport32Bit = true; 
   hardware.opengl.driSupport = true;
 
-  # For 32 bit applications
-  hardware.opengl.driSupport32Bit = true;
-  
-  # Nvidia 
-  nixpkgs.config.allowUnfree = true;
-  hardware.nvidia.prime.sync.enable = true;
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.prime.nvidiaBusId = "PCI:1:0:0";
-  hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
-  services.xserver.videoDrivers = [ "nvidia" ];
-
   programs.git.enable = true;
-  programs.light.enable = true;
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   networking.networkmanager.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
   services.upower.enable = true;
 }
 

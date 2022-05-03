@@ -25,7 +25,7 @@ configuration {
     display-combi: 					"";
 }
 
-@import "styles/colors.rasi"
+@import "colors.rasi"
 
 * {
     background-color:             	@bg;
